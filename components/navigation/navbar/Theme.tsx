@@ -6,9 +6,9 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-} from "../ui/dropdown-menu";
+} from "../../ui/dropdown-menu";
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
 
 const Theme = () => {
