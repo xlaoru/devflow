@@ -73,7 +73,7 @@ export async function PUT(
 
     const validatedData = UserSchema.partial().parse(body);
 
-    const updatedUser = User.findByIdAndUpdate(id, validatedData, {
+    const updatedUser = await User.findByIdAndUpdate(id, validatedData, {
       new: true,
       runValidators: true,
     });

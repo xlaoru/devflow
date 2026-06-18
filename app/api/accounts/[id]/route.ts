@@ -77,7 +77,7 @@ export async function PUT(
       throw new ValidationError(validatedData.error.flatten().fieldErrors);
     }
 
-    const updatedAccout = Account.findByIdAndUpdate(id, validatedData, {
+    const updatedAccout = await Account.findByIdAndUpdate(id, validatedData, {
       new: true,
       runValidators: true,
     });
