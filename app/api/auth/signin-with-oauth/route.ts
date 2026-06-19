@@ -58,8 +58,8 @@ export async function POST(request: Request) {
         updatedData.name = name;
       }
 
-      if (existingUser.name !== image) {
-        updatedData.name = image;
+      if (existingUser.image !== image) {
+        updatedData.image = image;
       }
 
       if (Object.keys(updatedData).length > 0) {
