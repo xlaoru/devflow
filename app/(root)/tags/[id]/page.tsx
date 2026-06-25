@@ -22,14 +22,14 @@ const Page = async ({ params, searchParams }: RouteParams) => {
   return (
     <>
       <section className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
-        <h1 className="h1-bold text-dark100_light_900">{tag?.name}</h1>
+        <h1 className="h1-bold text-dark100_light900">{tag?.name}</h1>
       </section>
       <section className="mt-11">
         <LocalSearch
           route={ROUTES.TAG(id)}
-          imgSrc={"/icons/search.svg"}
-          placeholder={"Search questions..."}
-          otherClasses={"flex-1"}
+          imgSrc="/icons/search.svg"
+          placeholder="Search questions..."
+          otherClasses="flex-1"
         />
       </section>
       <DataRenderer

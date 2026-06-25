@@ -1,4 +1,3 @@
-import { Question, Tag } from "@/database";
 import { FilterQuery } from "mongoose";
 import action from "../handlers/action";
 import handleError from "../handlers/error";
@@ -6,10 +5,11 @@ import {
   GetTagQuestionsSchema,
   PaginatedSearchParamsSchema,
 } from "../validations";
+import { Question, Tag } from "@/database";
 
-export async function getTags(
+export const getTags = async (
   params: PaginatedSearchParams
-): Promise<ActionResponse<{ tags: Tag[]; isNext: boolean }>> {
+): Promise<ActionResponse<{ tags: Tag[]; isNext: boolean }>> => {
   const validationResult = await action({
     params,
     schema: PaginatedSearchParamsSchema,
@@ -22,7 +22,6 @@ export async function getTags(
   const { page = 1, pageSize = 10, query, filter } = params;
 
   const skip = (Number(page) - 1) * pageSize;
-
   const limit = Number(pageSize);
 
   const filterQuery: FilterQuery<typeof Tag> = {};
@@ -71,13 +70,13 @@ export async function getTags(
   } catch (error) {
     return handleError(error) as ErrorResponse;
   }
-}
+};
 
-export async function getTagQuestions(
+export const getTagQuestions = async (
   params: GetTagQuestionsParams
 ): Promise<
   ActionResponse<{ tag: Tag; questions: Question[]; isNext: boolean }>
-> {
+> => {
   const validationResult = await action({
     params,
     schema: GetTagQuestionsSchema,
@@ -90,15 +89,11 @@ export async function getTagQuestions(
   const { tagId, page = 1, pageSize = 10, query } = params;
 
   const skip = (Number(page) - 1) * pageSize;
-
   const limit = Number(pageSize);
 
   try {
     const tag = await Tag.findById(tagId);
-
-    if (!tag) {
-      throw new Error("Tag not found");
-    }
+    if (!tag) throw new Error("Tag not found");
 
     const filterQuery: FilterQuery<typeof Question> = {
       tags: { $in: [tagId] },
@@ -132,4 +127,4 @@ export async function getTagQuestions(
   } catch (error) {
     return handleError(error) as ErrorResponse;
   }
-}
+};

@@ -5,6 +5,7 @@ export const SignInSchema = z.object({
     .string()
     .min(1, { message: "Email is required" })
     .email({ message: "Please provide a valid email address." }),
+
   password: z
     .string()
     .min(6, { message: "Password must be at least 6 characters long. " })
@@ -19,6 +20,7 @@ export const SignUpSchema = z.object({
     .regex(/^[a-zA-Z0-9_]+$/, {
       message: "Username can only contain letters, numbers, and underscores.",
     }),
+
   name: z
     .string()
     .min(1, { message: "Name is required." })
@@ -26,10 +28,12 @@ export const SignUpSchema = z.object({
     .regex(/^[a-zA-Z\s]+$/, {
       message: "Name can only contain letters and spaces.",
     }),
+
   email: z
     .string()
     .min(1, { message: "Email is required." })
     .email({ message: "Please provide a valid email address." }),
+
   password: z
     .string()
     .min(6, { message: "Password must be at least 6 characters long." })
@@ -51,7 +55,8 @@ export const AskQuestionSchema = z.object({
     .string()
     .min(5, { message: "Title is required." })
     .max(100, { message: "Title cannot exceed 100 characters." }),
-  content: z.string().min(1, { message: "Content is required." }),
+
+  content: z.string().min(1, { message: "Body is required." }),
   tags: z
     .array(
       z
@@ -59,23 +64,15 @@ export const AskQuestionSchema = z.object({
         .min(1, { message: "Tag is required." })
         .max(30, { message: "Tag cannot exceed 30 characters." })
     )
-    .min(1, { message: "At list one tag is required." })
+    .min(1, { message: "At least one tag is required." })
     .max(3, { message: "Cannot add more than 3 tags." }),
-});
-
-export const EditQuestionSchema = AskQuestionSchema.extend({
-  questionId: z.string().min(1, { message: "Question ID is required." }),
-});
-
-export const GetQuestionSchema = z.object({
-  questionId: z.string().min(1, { message: "Question ID is required." }),
 });
 
 export const UserSchema = z.object({
   name: z.string().min(1, { message: "Name is required." }),
   username: z
     .string()
-    .min(3, { message: "Userame must be at least 3 characters long." }),
+    .min(3, { message: "Username must be at least 3 characters long." }),
   email: z.string().email({ message: "Please provide a valid email address." }),
   bio: z.string().optional(),
   image: z.string().url({ message: "Please provide a valid URL." }).optional(),
@@ -112,11 +109,11 @@ export const AccountSchema = z.object({
     .min(1, { message: "Provider Account ID is required." }),
 });
 
-export const SingInWithOAuthSchema = z.object({
+export const SignInWithOAuthSchema = z.object({
   provider: z.enum(["google", "github"]),
   providerAccountId: z
     .string()
-    .min(1, { message: "Provider account ID is required." }),
+    .min(1, { message: "Provider Account ID is required." }),
   user: z.object({
     name: z.string().min(1, { message: "Name is required." }),
     username: z
@@ -125,8 +122,16 @@ export const SingInWithOAuthSchema = z.object({
     email: z
       .string()
       .email({ message: "Please provide a valid email address." }),
-    image: z.string().url("Invalid image URL.").optional(),
+    image: z.string().url("Invalid image URL").optional(),
   }),
+});
+
+export const EditQuestionSchema = AskQuestionSchema.extend({
+  questionId: z.string().min(1, { message: "Question ID is required." }),
+});
+
+export const GetQuestionSchema = z.object({
+  questionId: z.string().min(1, { message: "Question ID is required." }),
 });
 
 export const PaginatedSearchParamsSchema = z.object({
@@ -138,5 +143,5 @@ export const PaginatedSearchParamsSchema = z.object({
 });
 
 export const GetTagQuestionsSchema = PaginatedSearchParamsSchema.extend({
-  tagId: z.string().min(1, { message: "Tag ID is required" }),
+  tagId: z.string().min(1, { message: "Tag ID is required." }),
 });

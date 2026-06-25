@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { Button } from "../ui/button";
 import { useRouter, useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { formUrlQuery, removeKeysFromQuery } from "@/lib/url";
+import { formUrlQuery, removeKeysFromUrlQuery } from "@/lib/url";
 
 const filters = [
   //   { name: "Newest", value: "newest" },
@@ -28,7 +28,7 @@ const HomeFilter = () => {
     if (filter === active) {
       setActive("");
 
-      newUrl = removeKeysFromQuery({
+      newUrl = removeKeysFromUrlQuery({
         params: searchParams.toString(),
         keysToRemove: ["filter"],
       });
@@ -66,10 +66,3 @@ const HomeFilter = () => {
 };
 
 export default HomeFilter;
-
-/* 
-cn(
-            `body-medium rounded-lg px-6 py-3 capitalize shadow-none`,
-            active ==== filter.value ? "" : "bg-light-800 text-light-500 hover:bg-light-800 dark:bg-dark-300 dark:text-light-500 dark:hover:bg-dark-300"
-          )
-*/

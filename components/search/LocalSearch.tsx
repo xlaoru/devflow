@@ -1,10 +1,12 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { Input } from "../ui/input";
 import Image from "next/image";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import { formUrlQuery, removeKeysFromQuery } from "@/lib/url";
+import { useEffect, useState } from "react";
+
+import { formUrlQuery, removeKeysFromUrlQuery } from "@/lib/url";
+
+import { Input } from "../ui/input";
 
 interface Props {
   route: string;
@@ -23,11 +25,10 @@ const LocalSearch = ({
 }: Props) => {
   const pathname = usePathname();
   const router = useRouter();
-
   const searchParams = useSearchParams();
-  const query = searchParams.get("query") ?? "";
+  const query = searchParams.get("query") || "";
 
-  const [searchQuery, seSearchQuery] = useState(query);
+  const [searchQuery, setSearchQuery] = useState(query);
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
@@ -41,7 +42,7 @@ const LocalSearch = ({
         router.push(newUrl, { scroll: false });
       } else {
         if (pathname === route) {
-          const newUrl = removeKeysFromQuery({
+          const newUrl = removeKeysFromUrlQuery({
             params: searchParams.toString(),
             keysToRemove: ["query"],
           });
@@ -71,9 +72,7 @@ const LocalSearch = ({
         type="text"
         placeholder={placeholder}
         value={searchQuery}
-        onChange={(e) => {
-          seSearchQuery(e.target.value);
-        }}
+        onChange={(e) => setSearchQuery(e.target.value)}
         className="paragraph-regular no-focus placeholder text-dark400_light700 border-none shadow-none outline-none"
       />
       {iconPosition === "right" && (
