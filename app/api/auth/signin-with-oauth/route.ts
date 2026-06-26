@@ -3,7 +3,7 @@ import User from "@/database/user.model";
 import handleError from "@/lib/handlers/error";
 import { ValidationError } from "@/lib/http-errors";
 import dbConnect from "@/lib/mongoose";
-import { SingInWithOAuthSchema } from "@/lib/validations";
+import { SignInWithOAuthSchema } from "@/lib/validations";
 import mongoose from "mongoose";
 import { NextResponse } from "next/server";
 
@@ -18,7 +18,7 @@ export async function POST(request: Request) {
   session.startTransaction();
 
   try {
-    const validatedData = SingInWithOAuthSchema.safeParse({
+    const validatedData = SignInWithOAuthSchema.safeParse({
       provider,
       providerAccountId,
       user,
