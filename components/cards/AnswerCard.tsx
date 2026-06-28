@@ -1,15 +1,29 @@
-import React from "react";
+import React, { Suspense } from "react";
 import UserAvatar from "../UserAvatar";
 import Link from "next/link";
 import ROUTES from "@/constants/routes";
 import { getTimeStamp } from "@/lib/utils";
-import Preview from "../editor/Preview";
+import { Preview } from "../editor/Preview";
+import Votes from "../votes/Votes";
+import { hasVoted } from "@/lib/actions/vote.action";
 
-const AnswerCard = ({ _id, author, content, createdAt }: Answer) => {
+const AnswerCard = ({
+  _id,
+  author,
+  content,
+  createdAt,
+  upvotes,
+  downvotes,
+}: Answer) => {
+  const hasVotedPromise = hasVoted({
+    targetId: _id,
+    targetType: "answer",
+  });
+
   return (
     <article className="light-border border-b py-10">
       <span id={JSON.stringify(_id)} className="hash-span" />
-      <div className="mb-5 flex flex-col-reverse justify-between sm:flex-row sm:items-center sm:gap-2">
+      <div className="mb-5 flex flex-col-reverse justify-between gap-5 sm:flex-row sm:items-center sm:gap-2">
         <div className="flex flex-1 items-start gap-1 sm:items-center">
           <UserAvatar
             id={author._id}
@@ -22,7 +36,7 @@ const AnswerCard = ({ _id, author, content, createdAt }: Answer) => {
             className="flex flex-col sm:flex-row sm:items-center max-sm:ml-1"
           >
             <p className="body-semibold text-dark300_light700">
-              {author.name ?? "Annonymous"}
+              {author.name ?? "Anonymous"}
             </p>
             <p className="small-regular text-dark400_light500 ml-0.5 mt-0.5 line-clamp-1">
               <span className="max-sm:hidden"> • </span>
@@ -30,7 +44,17 @@ const AnswerCard = ({ _id, author, content, createdAt }: Answer) => {
             </p>
           </Link>
         </div>
-        <div className="flex justify-end">Votes</div>
+        <div className="flex justify-end">
+          <Suspense fallback={<div>Loading...</div>}>
+            <Votes
+              upvotes={upvotes}
+              downvotes={downvotes}
+              hasVotedPromise={hasVotedPromise}
+              targetType="answer"
+              targetId={_id}
+            />
+          </Suspense>
+        </div>
       </div>
       <Preview content={content} />
     </article>
