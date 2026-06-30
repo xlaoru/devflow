@@ -9,8 +9,8 @@ export interface ICollectionDoc extends ICollection, Document {}
 
 const CollectionSchema = new Schema<ICollection>(
   {
-    author: { type: Schema.Types.ObjectId, required: true },
-    question: { type: Schema.Types.ObjectId, required: true },
+    author: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    question: { type: Schema.Types.ObjectId, ref: "Question", required: true },
   },
   { timestamps: true }
 );
